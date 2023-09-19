@@ -1,7 +1,6 @@
 export interface Todo {
-
-}
-export interface TodoDeleteRequest {
-  id: string
-  from: Date
+  titre: string
+  task: string
+  dateCreation: Date
+  dateRealisation: Date
 }
