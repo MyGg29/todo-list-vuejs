@@ -1,6 +1,7 @@
 export interface Todo {
-  titre: string
+  id: number
+  title: string
   task: string
-  dateCreation: Date
-  dateRealisation: Date
+  creationDate: Date
+  doneAtDate: Date
 }

@@ -5,7 +5,9 @@ import { Client } from 'pg'
 @Injectable()
 export class TodoService implements OnModuleInit {
   db: Client
+  table: string
   constructor() {
+    this.table = "todo";
     this.db = new Client({
       host: process.env.DB_HOST,
       port: Number(process.env.DB_PORT),
@@ -18,18 +20,37 @@ export class TodoService implements OnModuleInit {
     await this.db.connect()
   }
   
-  async getAllTodos(): Promise<string> {
-    const selectQuery = `SELECT $1::text as message`
-    const res = await this.db.query(selectQuery, ["Hello Worldd"])
-    return res.rows[0].message
+  async getAllTodos(): Promise<Todo[]> {
+    const selectQuery = `SELECT id, title, task, creationDate, doneAtDate FROM ${this.table}`
+    const { rows } = await this.db.query(selectQuery)
+    return rows
   }
-  createTodo(body: Todo): string {
-    throw new Error('Method not implemented.');
+  async getTodo(id: string): Promise<Todo> {
+    const query = `SELECT id, title, task, creationDate, doneAtDate FROM ${this.table} WHERE id = $1`
+    const { rows } = await this.db.query(query, [id])
+    return rows[0]
   }
-  deleteTodo(id: string): string {
-    throw new Error('Method not implemented.');
+  async createTodo(body: Todo): Promise<boolean> {
+    const query = `INSERT INTO ${this.table}(title, task, creationDate) VALUES ($1, $2, $3)`
+    const values = [body.title, body.task, new Date()]
+    const res = await this.db.query(query, values)
+    return res.rowCount === 1
   }
-  updateTodo(id: string, body: Todo): string {
-    throw new Error('Method not implemented.');
+  async deleteTodo(id: string): Promise<boolean> {
+    const query = `DELETE FROM ${this.table} WHERE id=$1`
+    const values = [id]
+    const res = await this.db.query(query, values)
+    console.log(res)
+    return res.rowCount === 1
+  }
+  async updateTodo(id: string, body: Todo): Promise<Todo|null> {
+    const query = `UPDATE ${this.table} SET title = $1, task = $2, doneAtDate = $3 WHERE id = $4`
+    const values = [body.title, body.task, body.doneAtDate, id]
+    const res = await this.db.query(query, values)
+    if(res.rowCount === 1) {
+      return this.getTodo(id)
+    } else {
+      return
+    }
   }
 }
