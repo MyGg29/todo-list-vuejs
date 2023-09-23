@@ -1,10 +1,14 @@
 <script setup lang="ts">
-import { ref, defineComponent } from 'vue'
-const title = ""
-const content = ""
+import { ref } from 'vue'
+import ApiService from '../services/apiService'
+const title = ref("")
+const content = ref("")
 
-function handleSubmit() {
-
+const handleSubmit = () => {
+  ApiService.createTodo({
+    title: title.value,
+    task: content.value
+  })
 }
 const open = ref(false)
 </script>

@@ -1,8 +1,13 @@
 <script setup lang="ts">
 import TodoItem from '../components/TodoItem.vue'
 import TodoCreate from '../components/TodoCreate.vue'
+import { onMounted, ref } from 'vue';
+import ApiService, { type Todo } from '@/services/apiService';
 
-const todos = [1,2,3,4]
+const todos = ref([] as Todo[])
+onMounted(async () => {
+  todos.value = await ApiService.getAllTodos()
+})
 </script>
 <template>
   <div>
@@ -21,7 +26,7 @@ const todos = [1,2,3,4]
     </section>
     <section id="todo-list" class="list-todo">
       <TodoCreate/>
-      <TodoItem v-for="todo in todos" :key="todo" :index="todo"/>
+      <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo"/>
     </section>
   </div>
 </template>

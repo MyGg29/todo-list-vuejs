@@ -1,27 +1,29 @@
 <script setup lang="ts">
+import type { PropType } from 'vue';
+import { type Todo } from '../services/apiService'
 defineProps({
-  index: Number
+  todo: Object as PropType<Todo>
 })
 </script>
 <template>
   <article>
     <header>
       <div>
-        title {{ index }}
+        {{ todo?.title }}
       </div>
       <div class="header-info">
         <div>
-          date creation
+          {{ todo?.creationDate }}
         </div>
         <div>
-          <input :id="'done-checkbox-' + index" type="checkbox"> 
-          <label :for="'done-checkbox-' + index">done</label>
+          <input :id="'done-checkbox-' + todo?.id" type="checkbox"> 
+          <label :for="'done-checkbox-' + todo?.id">done</label>
         </div>
 
       </div>
     </header>
     <div>
-      content...
+      {{ todo?.task }}
     </div>
   </article>
 </template>
