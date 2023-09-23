@@ -6,6 +6,7 @@
   padding: 2rem;
 
   font-weight: normal;
+  font-family: 'Sana Sans Alt W00 Regular';
 }
 
 a,
@@ -29,7 +30,26 @@ a,
 
   #app {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: 3fr 1fr;
     padding: 0 2rem;
   }
+}
+@font-face {
+    font-family: "Sana Sans Alt W00 Black";
+    src: url("https://db.onlinewebfonts.com/t/ba8e281fe1ca5c5de2e52f0ca8c19ca5.eot");
+    src: url("https://db.onlinewebfonts.com/t/ba8e281fe1ca5c5de2e52f0ca8c19ca5.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/ba8e281fe1ca5c5de2e52f0ca8c19ca5.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/ba8e281fe1ca5c5de2e52f0ca8c19ca5.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/ba8e281fe1ca5c5de2e52f0ca8c19ca5.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/ba8e281fe1ca5c5de2e52f0ca8c19ca5.svg#Sana Sans Alt W00 Black")format("svg");
+}
+
+@font-face {
+    font-family: "Sana Sans Alt W00 Regular";
+    src: url("https://db.onlinewebfonts.com/t/d676911db6699aa6748801b8ef3cd8b9.eot");
+    src: url("https://db.onlinewebfonts.com/t/d676911db6699aa6748801b8ef3cd8b9.eot?#iefix")format("embedded-opentype"),
+    url("https://db.onlinewebfonts.com/t/d676911db6699aa6748801b8ef3cd8b9.woff2")format("woff2"),
+    url("https://db.onlinewebfonts.com/t/d676911db6699aa6748801b8ef3cd8b9.woff")format("woff"),
+    url("https://db.onlinewebfonts.com/t/d676911db6699aa6748801b8ef3cd8b9.ttf")format("truetype"),
+    url("https://db.onlinewebfonts.com/t/d676911db6699aa6748801b8ef3cd8b9.svg#Sana Sans Alt W00 Regular")format("svg");
 }
