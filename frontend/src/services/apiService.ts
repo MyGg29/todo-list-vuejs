@@ -27,6 +27,9 @@ export default class ApiService {
     }
 
   }
+  static async deleteTodo(id: number) {
+    return await axios.delete("/" + id)
+  }  
   static async getAllTodos(): Promise<Todo[]> {
     const res = await axios.get<Todo[]>("/")
     store.todos = this.parseDate(res.data)
