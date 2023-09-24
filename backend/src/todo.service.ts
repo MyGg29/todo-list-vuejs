@@ -21,17 +21,17 @@ export class TodoService implements OnModuleInit {
   }
   
   async getAllTodos(): Promise<Todo[]> {
-    const selectQuery = `SELECT id, title, task, creationDate, doneAtDate FROM ${this.table}`
-    const { rows } = await this.db.query(selectQuery)
+    const selectQuery = `SELECT id, title, task, "creationDate", "doneAtDate" FROM ${this.table}`
+    const { rows } = await this.db.query<Todo>(selectQuery)
     return rows
   }
   async getTodo(id: string): Promise<Todo> {
-    const query = `SELECT id, title, task, creationDate, doneAtDate FROM ${this.table} WHERE id = $1`
+    const query = `SELECT id, title, task, "creationDate", "doneAtDate" FROM ${this.table} WHERE id = $1`
     const { rows } = await this.db.query(query, [id])
     return rows[0]
   }
   async createTodo(body: Todo): Promise<boolean> {
-    const query = `INSERT INTO ${this.table}(title, task, creationDate) VALUES ($1, $2, $3)`
+    const query = `INSERT INTO ${this.table}(title, task, "creationDate") VALUES ($1, $2, $3)`
     const values = [body.title, body.task, new Date()]
     const res = await this.db.query(query, values)
     return res.rowCount === 1
@@ -44,7 +44,7 @@ export class TodoService implements OnModuleInit {
     return res.rowCount === 1
   }
   async updateTodo(id: string, body: Todo): Promise<Todo|null> {
-    const query = `UPDATE ${this.table} SET title = $1, task = $2, doneAtDate = $3 WHERE id = $4`
+    const query = `UPDATE ${this.table} SET title = $1, task = $2, "doneAtDate" = $3 WHERE id = $4`
     const values = [body.title, body.task, body.doneAtDate, id]
     const res = await this.db.query(query, values)
     if(res.rowCount === 1) {
