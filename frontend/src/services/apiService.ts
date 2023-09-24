@@ -1,3 +1,4 @@
+import { store } from "@/store/store"
 import axios from "axios"
 
 export interface Todo {
@@ -5,11 +6,16 @@ export interface Todo {
   title: string
   task: string
   creationDate: Date
-  doneAtDate: Date
+  doneAtDate: Date|null
 }
 export interface TodoCreation {
   title: string
   task: string
+}
+export interface TodoUpdate {
+  title: string
+  task: string
+  doneAtDate: Date
 }
 export default class ApiService {
   static async createTodo(todo: TodoCreation): Promise<boolean> {
@@ -22,7 +28,24 @@ export default class ApiService {
 
   }
   static async getAllTodos(): Promise<Todo[]> {
-    const res = await axios.get("/")
-    return res.data
+    const res = await axios.get<Todo[]>("/")
+    store.todos = this.parseDate(res.data)
+    return store.todos
+  }
+  static async toggleTodoDone(todo: Todo, done: boolean) {
+    if(done) {
+      await axios.put(`${todo.id}`, {
+        doneAtDate: new Date(),
+        task: todo.task,
+        title: todo.title
+      } as TodoUpdate)
+    }
+  }
+  static parseDate(data: Todo[]): Todo[] {
+    return data.map(x => {
+      x.creationDate = new Date(x.creationDate)
+      x.doneAtDate = x.doneAtDate ? new Date(x.doneAtDate) : null
+      return x
+    })
   }
 }

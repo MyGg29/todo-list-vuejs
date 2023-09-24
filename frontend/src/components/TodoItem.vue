@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import type { PropType } from 'vue';
-import { type Todo } from '../services/apiService'
-defineProps({
+import { ref, type PropType } from 'vue';
+import ApiService, { type Todo } from '../services/apiService'
+const props = defineProps({
   todo: Object as PropType<Todo>
 })
+const done = ref(props.todo?.doneAtDate != null)
+
+const check = (e:Event) => {
+  if(props.todo?.id) {
+    ApiService.toggleTodoDone(props.todo, done.value)
+  }
+}
 </script>
 <template>
   <article>
@@ -13,11 +20,11 @@ defineProps({
       </div>
       <div class="header-info">
         <div>
-          {{ todo?.creationDate }}
+          Crée le : {{ todo?.creationDate?.toLocaleString() }}
         </div>
         <div>
-          <input :id="'done-checkbox-' + todo?.id" type="checkbox"> 
-          <label :for="'done-checkbox-' + todo?.id">done</label>
+          <input @change="check($event)" v-model="done" :id="'done-checkbox-' + todo?.id" type="checkbox"> 
+          <label :for="'done-checkbox-' + todo?.id">Fait</label>
         </div>
 
       </div>
@@ -48,6 +55,9 @@ header > * {
 .header-info {
   display: flex;
   flex-direction: column;
+  align-items: end;
+  font-size: 0.75rem;
+  font-style: italic;
 }
 </style>
 

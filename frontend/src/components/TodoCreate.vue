@@ -3,12 +3,15 @@ import { ref } from 'vue'
 import ApiService from '../services/apiService'
 const title = ref("")
 const content = ref("")
+const emit = defineEmits(["created"])
 
-const handleSubmit = () => {
-  ApiService.createTodo({
+const handleSubmit = async () => {
+  await ApiService.createTodo({
     title: title.value,
     task: content.value
   })
+  open.value = false
+  emit("created") // notify the parent that a item was created so we can update the display
 }
 const open = ref(false)
 </script>

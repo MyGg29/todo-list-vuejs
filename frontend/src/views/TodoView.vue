@@ -8,6 +8,26 @@ const todos = ref([] as Todo[])
 onMounted(async () => {
   todos.value = await ApiService.getAllTodos()
 })
+const getTasksDone = () => {
+  return todos.value.reduce((acc, x) => {
+    if(x.doneAtDate != null) {
+      acc++
+    }
+    return acc
+  }, 0)
+}
+
+const getTaskInProgress = () => {
+  return todos.value.reduce((acc, x) => {
+    if(x.doneAtDate == null) {
+      acc++
+    }
+    return acc
+  }, 0)
+}
+const updateList = async () => {
+  todos.value = await ApiService.getAllTodos()
+}
 </script>
 <template>
   <div>
@@ -17,15 +37,15 @@ onMounted(async () => {
     <section id="summary-todos" class="summary-section">
       <div>
         <div>
-          Taches faites: <span>xx</span>
+          Taches faites: <span>{{ getTasksDone() }}</span>
         </div>
         <div>
-          Taches en cours: <span>xx</span>
+          Taches en cours: <span>{{ getTaskInProgress() }}</span>
         </div>
       </div>
     </section>
     <section id="todo-list" class="list-todo">
-      <TodoCreate/>
+      <TodoCreate @created="updateList()" />
       <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo"/>
     </section>
   </div>
