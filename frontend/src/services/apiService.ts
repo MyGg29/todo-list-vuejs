@@ -15,7 +15,7 @@ export interface TodoCreation {
 export interface TodoUpdate {
   title: string
   task: string
-  doneAtDate: Date
+  doneAtDate: Date|null
 }
 export default class ApiService {
   static async createTodo(todo: TodoCreation): Promise<boolean> {
@@ -33,13 +33,21 @@ export default class ApiService {
     return store.todos
   }
   static async toggleTodoDone(todo: Todo, done: boolean) {
+    let payload = {} as TodoUpdate
     if(done) {
-      await axios.put(`${todo.id}`, {
+      payload = {
         doneAtDate: new Date(),
         task: todo.task,
         title: todo.title
-      } as TodoUpdate)
+      }
+    } else {
+      payload = {
+        doneAtDate: null,
+        task: todo.task,
+        title: todo.title
+      }
     }
+    await axios.put(`${todo.id}`, payload)
   }
   static parseDate(data: Todo[]): Todo[] {
     return data.map(x => {

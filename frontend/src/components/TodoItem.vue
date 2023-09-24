@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import { ref, type PropType } from 'vue';
 import ApiService, { type Todo } from '../services/apiService'
+import { store } from '@/store/store';
 const props = defineProps({
   todo: Object as PropType<Todo>
 })
 const done = ref(props.todo?.doneAtDate != null)
 
-const check = (e:Event) => {
+const check = async (e:Event) => {
   if(props.todo?.id) {
-    ApiService.toggleTodoDone(props.todo, done.value)
+    await ApiService.toggleTodoDone(props.todo, done.value)
+    store.todos = await ApiService.getAllTodos()
   }
 }
 </script>

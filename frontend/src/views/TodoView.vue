@@ -3,13 +3,14 @@ import TodoItem from '../components/TodoItem.vue'
 import TodoCreate from '../components/TodoCreate.vue'
 import { onMounted, ref } from 'vue';
 import ApiService, { type Todo } from '@/services/apiService';
+import { store } from '@/store/store'
 
-const todos = ref([] as Todo[])
+//const todos = ref([] as Todo[])
 onMounted(async () => {
-  todos.value = await ApiService.getAllTodos()
+  store.todos = await ApiService.getAllTodos()
 })
 const getTasksDone = () => {
-  return todos.value.reduce((acc, x) => {
+  return store.todos.reduce((acc, x) => {
     if(x.doneAtDate != null) {
       acc++
     }
@@ -18,15 +19,12 @@ const getTasksDone = () => {
 }
 
 const getTaskInProgress = () => {
-  return todos.value.reduce((acc, x) => {
+  return store.todos.reduce((acc, x) => {
     if(x.doneAtDate == null) {
       acc++
     }
     return acc
   }, 0)
-}
-const updateList = async () => {
-  todos.value = await ApiService.getAllTodos()
 }
 </script>
 <template>
@@ -45,8 +43,8 @@ const updateList = async () => {
       </div>
     </section>
     <section id="todo-list" class="list-todo">
-      <TodoCreate @created="updateList()" />
-      <TodoItem v-for="todo in todos" :key="todo.id" :todo="todo"/>
+      <TodoCreate/>
+      <TodoItem v-for="todo in store.todos" :key="todo.id" :todo="todo"/>
     </section>
   </div>
 </template>
