@@ -2,16 +2,23 @@
 import { ref } from 'vue'
 import ApiService from '../services/apiService'
 import { store } from '@/store/store';
+import type { Delta } from '@vueup/vue-quill'
 const title = ref("")
 const content = ref("")
+const resetForm = () => {
+  title.value = ""
+  content.value = ""
+}
 
 const handleSubmit = async () => {
+  console.log(content.value)
   await ApiService.createTodo({
     title: title.value,
     task: content.value
   })
   open.value = false
-  store.todos = await ApiService.getAllTodos()
+  store.refreshTodos()
+  resetForm()
 }
 const open = ref(false)
 </script>
@@ -20,19 +27,23 @@ const open = ref(false)
     Cliquer pour créer une tache
   </article>
   <div v-if="open" class="modal">
-    <p>Créer un todo</p>
-    <form class="create-form" @submit.prevent="handleSubmit">
-      <label for="title">Titre</label>
-      <input v-model="title" id="title" type="text"/>
-      <label for="content">Contenu</label>
-      <textarea v-model="content" id="content" >
-      </textarea>
+    <div class="modal-content">
+      <p>Créer un todo</p>
+      <form class="create-form" @submit.prevent="handleSubmit">
+        <label for="title">Titre</label>
+        <input v-model="title" id="title" type="text"/>
+        <label for="content">Contenu</label>
+        <quill-editor v-model:content="content" 
+          contentType="html"
+          theme="snow">
+        </quill-editor>
+        <div class="form-buttons">
+          <button @click="open = false">Fermer</button>
+          <button type="submit">Sauvegarder</button>
+        </div>
+      </form>
 
-      <div class="form-buttons">
-        <button @click="open = false">Fermer</button>
-        <button type="submit">Sauvegarder</button>
-      </div>
-    </form>
+    </div>
   </div>
 </template>
 
@@ -46,6 +57,7 @@ const open = ref(false)
 .create-form {
   display:flex;
   flex-direction: column;
+  flex-grow: 1;
 }
 .create-todo {
   display:flex;
@@ -54,8 +66,8 @@ const open = ref(false)
   cursor: pointer
 }
 article {
-  min-width: 300px;
-  border: 1px solid black
+  border: 1px dashed black;
+  border-radius: 0.4rem;
 }
 header {
   font-size: 1.5rem;
@@ -79,11 +91,18 @@ header > * {
   z-index: 999;
   top: 20%;
   left: 50%;
-  width: 300px;
-  margin-left: -150px;
+  width: 30rem;
+  margin-left: -15rem;
+  height: 30rem;
   border: 1px solid black;
+  border-radius: 0.4rem;
   padding: 10px;
   background-color: white;
+}
+.modal-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
 }
 </style>
 
