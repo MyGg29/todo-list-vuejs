@@ -24,7 +24,7 @@ const open = ref(false)
 </script>
 <template>
   <article @click="open = true" class="create-todo">
-    Cliquer pour créer une tache
+    Cliquer pour créer une tâche
   </article>
   <div v-if="open" class="modal">
     <div class="modal-content">
@@ -63,7 +63,8 @@ const open = ref(false)
   display:flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer
+  cursor: pointer;
+  min-height: 5rem;
 }
 article {
   border: 1px dashed black;

@@ -47,8 +47,11 @@ const getShowableContent = (task:string|undefined) => {
         {{ todo?.title }}
       </div>
       <div class="header-info">
-        <div>
+        <div class="header-created-date">
           Crée le : {{ todo?.creationDate?.toLocaleString() }}
+        </div>
+        <div class="header-done-date" v-if="todo?.doneAtDate">
+          Fait le : {{ todo?.doneAtDate?.toLocaleString() }}
         </div>
         <div class="header-info-buttons">
           <div class="done-button">
@@ -83,7 +86,7 @@ header {
   font-size: 1.5rem;
   font-family: 'Sana Sans Alt W00 Black';
   display: flex;
-  flex-direction: column;
+  flex-direction: row;
   border-bottom: 1px solid grey;
   justify-content: space-between;
 }
@@ -93,16 +96,27 @@ header > * {
 }
 .header-info {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   font-size: 0.75rem;
   font-style: italic;
 }
+.header-created-date {
+  background-color: lightgray;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+}
+.header-done-date {
+  background-color: lightgray;
+  margin-top: 0.4rem;
+  padding: 0.4rem;
+  border-radius: 0.4rem;
+}
 .header-info-buttons {
-  margin-left: 2rem;
   display: flex;
-  flex-direction: column;
-  align-items: end;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
 }
 .delete-button {
   display: flex;

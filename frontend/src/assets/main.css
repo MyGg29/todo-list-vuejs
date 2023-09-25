@@ -7,6 +7,11 @@
   font-weight: normal;
   font-family: 'Sana Sans Alt W00 Regular';
 }
+@media (max-width: 1024px) {
+  #app {
+    margin: 0;
+  }
+}
 
 a,
 .green {

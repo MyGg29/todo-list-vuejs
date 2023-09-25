@@ -35,10 +35,10 @@ const getTaskInProgress = () => {
     <section id="summary-todos" class="summary-section">
       <div>
         <div>
-          Taches faites: <span>{{ getTasksDone() }}</span>
+          Tâches faites: <span>{{ getTasksDone() }}</span>
         </div>
         <div>
-          Taches en cours: <span>{{ getTaskInProgress() }}</span>
+          Tâches en cours: <span>{{ getTaskInProgress() }}</span>
         </div>
       </div>
     </section>
@@ -61,14 +61,15 @@ const getTaskInProgress = () => {
 <style>
 .full-display {
   display: grid;
-  grid-template-columns: 3fr 1fr;
+  grid-template-columns: 2fr 1fr;
 }
 .list-todo {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(1, 1fr);
   gap: 3rem;
-  padding-right: 1.5rem;
-  border-right: 1px solid black;
+  padding: 1.5rem;
+  background-color: lightgray;
+  border-radius: 0.4rem;
 }
 .done-todo {
   display:flex;
